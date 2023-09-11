@@ -27,11 +27,6 @@ int main() {
 	while (1) {
 		BeginBatchDraw();
 		getmessage(&mouse, EX_MOUSE); // 获取鼠标消息
-		if (mouse.message == EX_WINDOW) { // 关闭窗口
-			if (MessageBox(NULL, "确定要退出吗？", "提示", MB_YESNO) == IDYES) {
-				closegraph();
-			}
-		}
 		if (is_exec_piece && mouse.message == WM_LBUTTONDOWN) {// 是否是左击消息
 			piece_color = leftClick(piece_color, mouse, piece, playback_piece, piece_map);
 		}
