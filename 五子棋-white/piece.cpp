@@ -25,7 +25,7 @@ void initBoard(Button* replay, Button*playback, Button* exit_play) {
 	setfillcolor(BLACK);
 	//fillcircle(240, 240, 3);
 	int x = boardX_extend / 4;
-	int y = boardY_extend / 4;
+	int y = boardX_extend / 4;
 	for (int m = 1; m < 4; m++) 
 		for(int n = 1; n < 4; n++)
 			fillcircle(x * m, y * n, 3); // ÖÐÐÄµã

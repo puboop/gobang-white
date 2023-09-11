@@ -6,7 +6,7 @@ Piece* piece_map[call_count][call_count]; // 初始化出地图一样的结构体数组
 
 int main() {
 	// EX_SHOWCONSOLE | EX_NOCLOSE 显示控制台，并且禁用关闭窗口
-	HWND  hwnd = initgraph(boardX_extend, boardY_extend, EX_SHOWCONSOLE | EX_NOCLOSE); // 定义窗口大小
+	HWND  hwnd = initgraph(boardX_extend, boardY_extend, EX_NOCLOSE); // 定义窗口大小
 	HICON hIcon = (HICON)LoadImage(NULL, "盒子.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE); // 加载图标文件
 	//SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon); // 设置任务栏图标 同步进行
 	PostMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon); // 设置任务栏图标 异步进行
