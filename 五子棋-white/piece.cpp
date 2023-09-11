@@ -115,8 +115,8 @@ int leftClick(int piece_color, ExMessage mouse, Piece* piece, Piece* playback_pi
 		if ((p->x == x) && (p->y == y) && (p->seat == -1)) {
 			p->seat = piece_color;
 			// 落子位置设置
-			int i = x / call_size;
-			int j = y / call_size;
+			int i = x / call_size-1;
+			int j = y / call_size-1;
 			piece_map[i][j]->x = x;
 			piece_map[i][j]->y = y;
 			piece_map[i][j]->seat = piece_color;
@@ -161,6 +161,7 @@ bool isWin(Piece *piece_map[call_count][call_count]) {
 					(seat == piece_map[i][j - 3]->seat) &&
 					(seat == piece_map[i][j - 4]->seat)) {
 					ifIsWho(seat);
+					//printf("触发 向上 向下");
 					return true;
 				}
 				// 向左 向右
@@ -169,15 +170,16 @@ bool isWin(Piece *piece_map[call_count][call_count]) {
 					(seat == piece_map[i - 3][j]->seat) &&
 					(seat == piece_map[i - 4][j]->seat)) {
 					ifIsWho(seat);
+					//printf("触发 向左 向右");
 					return true;
 				}
-				// 斜右上 右下
-				if ((seat == piece_map[i + 1][j + 1]->seat) && // 向上一个坐标
-					(seat == piece_map[i + 2][j + 2]->seat) &&
-					(seat == piece_map[i + 3][j + 3]->seat) &&
-					(seat == piece_map[i + 4][j + 4]->seat)) {
-					ifIsWho(seat);
-					return true;
+				// 判断当前坐标位置是否越界
+				if ((j + 1 >= call_count) ||
+					(j + 2 >= call_count) ||
+					(j + 3 >= call_count) ||
+					(j + 4 >= call_count)) {
+					//printf("i>%2d, j>%2d\n", i, j);
+					continue;
 				}
 				// 斜左上 左下
 				if ((seat == piece_map[i - 1][j + 1]->seat) && // 向上一个坐标
@@ -185,6 +187,24 @@ bool isWin(Piece *piece_map[call_count][call_count]) {
 					(seat == piece_map[i - 3][j + 3]->seat) &&
 					(seat == piece_map[i - 4][j + 4]->seat)) {
 					ifIsWho(seat);
+					//printf("触发 斜左上 左下");
+					return true;
+				}
+				// 判断当前坐标位置是否越界
+				if ((i + 1 >= call_count) ||
+					(i + 2 >= call_count) ||
+					(i + 3 >= call_count) || 
+					(i + 4 >= call_count)) {
+					//printf("i>%2d, j>%2d\n", i, j);
+					continue;
+				}
+				// 斜右上 右下
+				if ((seat == piece_map[i + 1][j + 1]->seat) && // 向上一个坐标
+					(seat == piece_map[i + 2][j + 2]->seat) &&
+					(seat == piece_map[i + 3][j + 3]->seat) &&
+					(seat == piece_map[i + 4][j + 4]->seat)) {
+					ifIsWho(seat);
+					//printf("触发 斜右上 右下");
 					return true;
 				}
 			}
