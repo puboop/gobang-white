@@ -5,11 +5,16 @@ extern bool is_exec_piece = true; // 执行下棋，当游戏结束后结束落棋子
 Piece* piece_map[call_count][call_count]; // 初始化出地图一样的结构体数组
 
 int main() {
-	initgraph(boardX_extend, boardY_extend); // 定义窗口大小
+	// EX_SHOWCONSOLE | EX_NOCLOSE 显示控制台，并且禁用关闭窗口
+	HWND  hwnd = initgraph(boardX_extend, boardY_extend, EX_SHOWCONSOLE | EX_NOCLOSE); // 定义窗口大小
+	HICON hIcon = (HICON)LoadImage(NULL, "盒子.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE); // 加载图标文件
+	//SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon); // 设置任务栏图标 同步进行
+	PostMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon); // 设置任务栏图标 异步进行
+	SetWindowText(hwnd, "white666"); // 设置窗口标题
 	// 创建按钮
-	Button* replay = createButton(30, boardX +30, 120, 40, "重玩", RGB(248, 227, 200), board_color);
-	Button* playback = createButton(30+120+30, boardX + 30, 120, 40, "回放", RGB(248, 227, 200), board_color);
-	Button* exit_play = createButton(30+120+ 120 +30+30, boardX + 30, 120, 40, "退出游戏", RGB(248, 227, 200), board_color);
+	Button* replay = createButton(30, boardX + 30, 120, 40, "重玩", RGB(248, 227, 200), board_color);
+	Button* playback = createButton(30 + 120 + 30, boardX + 30, 120, 40, "回放", RGB(248, 227, 200), board_color);
+	Button* exit_play = createButton(30 + 120 + 120 + 30 + 30, boardX + 30, 120, 40, "退出游戏", RGB(248, 227, 200), board_color);
 
 	initBoard(replay, playback, exit_play); // 初始化棋盘 得到一个头节点
 	Piece* piece;
@@ -22,6 +27,11 @@ int main() {
 	while (1) {
 		BeginBatchDraw();
 		getmessage(&mouse, EX_MOUSE); // 获取鼠标消息
+		if (mouse.message == EX_WINDOW) { // 关闭窗口
+			if (MessageBox(NULL, "确定要退出吗？", "提示", MB_YESNO) == IDYES) {
+				closegraph();
+			}
+		}
 		if (is_exec_piece && mouse.message == WM_LBUTTONDOWN) {// 是否是左击消息
 			piece_color = leftClick(piece_color, mouse, piece, playback_piece, piece_map);
 		}
